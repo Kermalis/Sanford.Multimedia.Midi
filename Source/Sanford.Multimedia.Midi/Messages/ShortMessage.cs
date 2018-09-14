@@ -65,7 +65,7 @@ namespace Sanford.Multimedia.Midi
 
         #region Constants
 
-        public const int DataMaxValue= 127;
+        public const int DataMaxValue= 255;
 
         public const int StatusMaxValue = 255;
 

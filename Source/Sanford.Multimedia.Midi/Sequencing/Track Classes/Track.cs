@@ -110,6 +110,12 @@ namespace Sanford.Multimedia.Midi
                 head = newMidiEvent;
                 tail = newMidiEvent;
             }
+            else if (position < head.AbsoluteTicks)
+            {
+                newMidiEvent.Next = head;
+                head.Previous = newMidiEvent;
+                head = newMidiEvent;
+            }
             else if(position >= tail.AbsoluteTicks)
             {
                 newMidiEvent.Previous = tail;
@@ -122,23 +128,12 @@ namespace Sanford.Multimedia.Midi
             {
                 MidiEvent current = head;
 
-                while(current.AbsoluteTicks < position)
-                {
+                while(!(current.AbsoluteTicks > position))
                     current = current.Next;
-                }
 
                 newMidiEvent.Next = current;
                 newMidiEvent.Previous = current.Previous;
-
-                if(current.Previous != null)
-                {
-                    current.Previous.Next = newMidiEvent;
-                }
-                else
-                {
-                    head = newMidiEvent;
-                }
-
+                current.Previous.Next = newMidiEvent;
                 current.Previous = newMidiEvent;
             }
 
@@ -563,7 +558,7 @@ namespace Sanford.Multimedia.Midi
                     length += tail.AbsoluteTicks;
                 }
 
-                return length + 1;
+                return length;
             }
         }
 
